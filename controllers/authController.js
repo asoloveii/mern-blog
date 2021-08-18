@@ -7,8 +7,9 @@ module.exports = new class AuthController {
   async register(req, res, next) {
     try {
       const { username, email, password, firstname, secondname, age } = req.body
+      const profilePic = req.file.profilePic
 
-      const user = new User({ username, email, password, firstname, secondname, age })
+      const user = new User({ username, email, password, firstname, secondname, age, profilePic })
       await user.save()
 
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" })

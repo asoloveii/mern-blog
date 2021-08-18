@@ -4,7 +4,8 @@ class PostsController {
   async createPost(req, res, next) {
     if (req.user && req.user.username === req.body.author) {
       try {
-        const { author, title, desc, photo, category } = req.body
+        const { author, title, desc, category } = req.body
+        const photo = req.file.postPhoto
 
         const post = new Post({ author, title, desc, photo, category })
 
@@ -48,7 +49,14 @@ class PostsController {
     if (req.user && req.user.username === req.body.author) {
       try {
         const { id } = req.params
-        await Post.findByIdAndUpdate(id, { $set: req.body })
+        await Post.findByIdAndUpdate(id, {
+          $set: {
+            title: req.body.title,
+            desc: req.body.desc,
+            category: req.body.category,
+            photo: req.file.postPhoto
+          }
+        })
 
         res.status(201).json({ message: "Poat has been updated" })
       } catch (e) {

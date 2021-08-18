@@ -10,6 +10,7 @@ app.use(express.json())
 app.use("/api/auth", require("./routes/auth.routes.js"))
 app.use("/api/users", require("./routes/users.routes.js"))
 app.use("/api/posts", require("./routes/posts.routes.js"))
+app.use("/api/categories", require("./routes/category.routes.js"))
 
 async function start() {
   await mongoose.connect(process.env.MONGO_URI, {

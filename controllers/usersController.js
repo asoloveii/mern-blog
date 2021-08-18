@@ -18,7 +18,17 @@ class UsersController {
       try {
         const { id } = req.params
 
-        await User.findByIdAndUpdate(id, { $set: req.body }, { new: true })
+        await User.findByIdAndUpdate(id, {
+          $set: {
+            username: req.body.username,
+            firstname: req.body.firstname,
+            secondname: req.body.secondname,
+            email: req.body.email,
+            desc: req.body.desc,
+            age: req.body.age,
+            profilePic: req.file.profilePic
+          }
+        }, { new: true })
 
         res.status(200).json({ message: "User has been updated" })
       } catch (e) {
