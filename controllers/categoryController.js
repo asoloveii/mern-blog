@@ -27,6 +27,15 @@ class CategoryController {
       res.status(400).json({ message: "You can't create category" })
     }
   }
+
+  async getCategories(req, res, next) {
+    try {
+      const categories = await Category.find()
+      res.status(200).json(categories)
+    } catch (e) {
+      res.status(400).json({ message: e.message })
+    }
+  }
 }
 
 module.exports = new CategoryController

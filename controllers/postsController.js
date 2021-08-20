@@ -32,9 +32,9 @@ class PostsController {
     try {
       let posts
       if (req.query.cat) {
-        posts = await Post.find({ category: cat })
+        posts = await Post.find({ category: req.query.cat })
       } else if (req.query.user) {
-        posts = await Post.find({ author: user })
+        posts = await Post.find({ author: req.query.user })
       } else {
         posts = await Post.find()
       }

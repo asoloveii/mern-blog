@@ -2,14 +2,14 @@ const jwt = require("jsonwebtoken")
 const crypto = require("crypto")
 const User = require("../models/User")
 const sendMail = require("../utils/sendMail")
-
+const bcrypt = require("bcrypt")
 module.exports = new class AuthController {
   async register(req, res, next) {
     try {
-      const { username, email, password, firstname, secondname, age } = req.body
-      const profilePic = req.file.profilePic
+      const { username, email, password, firstname, secondname, age, desc } = req.body
+      const profilePic = req.file.originalname
 
-      const user = new User({ username, email, password, firstname, secondname, age, profilePic })
+      const user = new User({ username, email, password, firstname, secondname, age, profilePic, desc })
       await user.save()
 
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" })
@@ -30,16 +30,19 @@ module.exports = new class AuthController {
         res.status(404).json({ message: "User not found" })
       }
 
-      const isPasswordsMatch = user.matchPasswords(password)
+      const isPasswordsMatch = await user.matchPasswords(password)
 
       if (!isPasswordsMatch) {
         res.status(400).json({ message: "Invalid password" })
       }
 
+
+
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" })
-      res.status(200).json({ message: "Authenticated successfuly", token })
+      res.status(200).json({ message: "Authenticated successfuly", token, user })
     } catch (e) {
-      res.status(400).json({ message: e })
+      res.status(400).json({ message: e.message })
+      console.log(e)
     }
   }
 
