@@ -1,17 +1,30 @@
 import React from 'react'
-import { Button, Card, CardActions, CardContent, CardMedia, Link, makeStyles, Typography } from '@material-ui/core'
+import { Button, Card, CardActions, CardContent, CardMedia, makeStyles, Typography } from '@material-ui/core'
+import { format } from "timeago.js"
+import { Link } from "react-router-dom"
 
 const useStyles = makeStyles({
   card: {
-    maxWidth: "49%"
+    margin: "10px"
+  },
+  cardDesc: {
+    overflow: 'hidden',
+    textOverflow: "ellipsis",
+    display: "-webkit-box",
+    WebkitLineClamp: 4,
+    WebkitBoxOrient: "vertical",
+    margin: "10px 0"
+  },
+  media: {
+    height: "240px"
   }
 })
 
-export default function Post({ title, desc, photo, id }) {
+export default function Post({ title, desc, photo, id, author, date }) {
   const classes = useStyles()
 
   return (
-    <div>
+    <>
       <Card className={classes.card}>
         <CardMedia
           className={classes.media}
@@ -19,13 +32,18 @@ export default function Post({ title, desc, photo, id }) {
           title={title}
         />
         <CardContent>
-          <Typography variant="h5">{title}</Typography>
-          <Typography variant="body2">{desc}</Typography>
+          <Typography variant="h5" gutterBottom>{title}</Typography>
+          <Typography>{format(date, 'en_US')}</Typography>
+          <Typography className={classes.cardDesc} variant="body1" component="p" >{desc}</Typography>
+          <Link to={`/users/${author}`} className="link"><Typography color="primary">@{author}</Typography></Link>
         </CardContent>
         <CardActions>
-          <Button><Link to={`/posts/${id}`}>Read more...</Link></Button>
+
+          <Button color="primary">
+            <Link to={`/posts/${id}`} style={{ color: "inherit", textDecoration: "none" }}>Read more</Link>
+          </Button>
         </CardActions>
       </Card>
-    </div>
+    </>
   )
 }

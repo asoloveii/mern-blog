@@ -1,0 +1,8 @@
+.home {
+  margin-bottom: 100px;
+
+  &__posts {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}

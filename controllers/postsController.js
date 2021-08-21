@@ -5,12 +5,12 @@ class PostsController {
     if (req.user && req.user.username === req.body.author) {
       try {
         const { author, title, desc, category } = req.body
-        const photo = req.file.postPhoto
+        const photo = req.file.originalname
 
         const post = new Post({ author, title, desc, photo, category })
 
         await post.save()
-        res.status(201).json({ message: "Poat has been created" })
+        res.status(201).json({ message: "Post has been created", post })
       } catch (e) {
         res.status(400).json({ message: e.message })
       }
@@ -54,11 +54,11 @@ class PostsController {
             title: req.body.title,
             desc: req.body.desc,
             category: req.body.category,
-            photo: req.file.postPhoto
+            photo: req.file.originalname
           }
         })
 
-        res.status(201).json({ message: "Poat has been updated" })
+        res.status(201).json({ message: "Post has been updated" })
       } catch (e) {
         res.status(400).json({ message: e.message })
       }

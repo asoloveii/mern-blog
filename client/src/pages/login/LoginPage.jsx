@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default function LoginPage() {
+export default function LoginPage({ history }) {
   const classes = useStyles()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -29,6 +29,7 @@ export default function LoginPage() {
   async function handleSubmit(e) {
     e.preventDefault()
     dispatch(loginThunk(email, password))
+    history.push('/')
   }
 
   return (

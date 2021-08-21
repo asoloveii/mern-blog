@@ -4,6 +4,7 @@ import BookmarkIcon from '@material-ui/icons/Bookmark'
 import PersonIcon from "@material-ui/icons/Person"
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import CreateIcon from '@material-ui/icons/Create'
 
 const useStyles = makeStyles({
   wrapper: {
@@ -40,11 +41,22 @@ export default function Navbar() {
           </div>
           <div>
             {isAuth ? (
-              <Button color="inherit">
-                {user.profilePic
-                  ? <img src={`/uploads/${user.profilePic}`} alt="Profile" />
-                  : <PersonIcon fontSize="large" />}
-              </Button>
+              <>
+                <Link to="/create" style={{ color: "inherit" }}>
+                  <Button color="inherit">
+                    <CreateIcon fontSize="large" />
+                  </Button>
+                </Link>
+                <Link to="/profile" className="link" style={{ color: "inherit" }}>
+                  <Button color="inherit">
+                    {user.profilePic
+                      ? <img src={`/uploads/${user.profilePic}`} alt="Profile" />
+                      : <PersonIcon fontSize="large" />}
+                  </Button>
+                </Link>
+
+              </>
+
             ) : <Link to="/login" className="link">
               <Button className={classes.button}>Login</Button>
             </Link>

@@ -35,8 +35,10 @@ export default function CatNavigation() {
   return (
     <Container maxWidth="lg" className={classes.container}>
       <CssBaseline />
-      {categories.map(cat => (
-        <Link to={`?cat=${cat.name}`} className="link"><Typography variant="h6" className={classes.link}>{cat.name}</Typography></Link>
+      {categories.map((cat, index) => (
+        <Link key={index} to={`?cat=${cat.name}`} className="link">
+          <Typography variant="h6" className={classes.link}>{cat.name}</Typography>
+        </Link>
       ))}
     </Container>
   )

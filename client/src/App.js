@@ -7,6 +7,7 @@ import ProfilePage from './pages/profile/ProfilePage'
 import RegisterPage from './pages/register/RegisterPage'
 import LoginPage from './pages/login/LoginPage'
 import { useSelector } from 'react-redux'
+import CreatePostPage from './pages/create/CreatePostPage'
 
 function App() {
   const isAuth = useSelector(state => state.auth.isAuth)
@@ -16,15 +17,18 @@ function App() {
       <Navbar />
       {isAuth ? (
         <Switch>
-          <Route path="/" component={HomePage} />
-          <Route path="/profile/:username" component={ProfilePage} />
+          <Route exact path="/" component={HomePage} />
+          <Route path="/profile" component={ProfilePage} />
+          <Route path="/create" component={CreatePostPage} />
+          {/* <Route path="/posts/:postId" component={<div>Loading......</div>} />
+          <Route path="/users/:username" component={<div>Loading......</div>} /> */}
           <Redirect to="/login" />
         </Switch>
       ) : (
         <Switch>
           <Route path="/register" component={RegisterPage} />
           <Route path="/login" component={LoginPage} />
-          <Route path="/" component={HomePage} />
+          <Route exact path="/" component={HomePage} />
           <Redirect to="/" />
         </Switch>
       )}
