@@ -1,7 +1,8 @@
-import { loginAPI } from './../api/api'
+import { loginAPI, updateUserAPI } from './../api/api'
 
 const LOGIN = "LOGIN"
 const LOGOUT = "LOGOUT"
+const UPDATE_USER = "UPDATE_USER"
 
 let initialState = {
   isAuth: false,
@@ -22,16 +23,35 @@ export const authReducer = (state = initialState, action) => {
         isAuth: false,
         user: {}
       }
+    case UPDATE_USER:
+      return {
+        ...state,
+        user: action.payload
+      }
     default:
       return state
   }
 }
 
 export const loginAC = (user) => { return { type: LOGIN, payload: user } }
+export const updateUserAC = (data) => { return { type: UPDATE_USER, payload: data } }
 export const logoutAC = () => { return { type: LOGOUT } }
 
 export const loginThunk = (email, password) => async dispatch => {
-  let res = await loginAPI(email, password)
-  dispatch(loginAC(res.data.user))
-  localStorage.setItem("token", res.data.token)
+  try {
+    let res = await loginAPI(email, password)
+    dispatch(loginAC(res.data.user))
+    localStorage.setItem("token", res.data.token)
+  } catch (e) {
+    console.log(e.message)
+  }
+}
+
+export const updateUserThunk = (userId, data) => async dispatch => {
+  try {
+    let res = await updateUserAPI(userId, data)
+    dispatch(updateUserAC(res.data.user))
+  } catch (e) {
+    console.log(e.message)
+  }
 }

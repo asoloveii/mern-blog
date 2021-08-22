@@ -47,6 +47,7 @@ export default function HomePage() {
                   photo={p.photo}
                   date={p.createdAt}
                   author={p.author}
+                  likes={p.likes}
                 />
               </Grid>
             ))}

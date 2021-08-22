@@ -49,6 +49,7 @@ class PostsController {
     if (req.user && req.user.username === req.body.author) {
       try {
         const { id } = req.params
+        console.log(req.body.title)
         await Post.findByIdAndUpdate(id, {
           $set: {
             title: req.body.title,
@@ -68,10 +69,11 @@ class PostsController {
   }
 
   async deletePost(req, res, next) {
+    console.log(req.body.author, req.user.username)
     if (req.user && req.user.username === req.body.author) {
       try {
         const { id } = req.params
-        await Post.findByIdAndDelete(id, { $set: req.body })
+        await Post.findByIdAndDelete(id)
 
         res.status(201).json({ message: "Post has been deleted" })
       } catch (e) {

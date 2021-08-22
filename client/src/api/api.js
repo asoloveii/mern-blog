@@ -19,16 +19,16 @@ export const registerAPI = (data) => {
 
 // USERS
 
-export const updateUser = (userId, data) => {
+export const updateUserAPI = (userId, data) => {
   return instance.put(`/users/${userId}`, { userId, data })
 }
 
-export const deleteUser = (userId) => {
+export const deleteUserAPI = (userId) => {
   return instance.delete(`/users/${userId}`, { userId })
 }
 
-export const getUser = (username, userId) => {
-  return instance.get(`/users/${username}`, { userId })
+export const getUserAPI = (username) => {
+  return instance.get(`/users/${username}`)
 }
 
 // POSTS
@@ -45,8 +45,8 @@ export const getPostAPI = (postId) => {
   return instance.get(`/posts/${postId}`)
 }
 
-export const updatePostAPI = (postId, data) => {
-  return instance.put(`/posts/${postId}`, data)
+export const updatePostAPI = (postId, data, author) => {
+  return instance.put(`/posts/${postId}`, { data })
 }
 
 export const deletePostAPI = (postId, author) => {

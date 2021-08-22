@@ -15,6 +15,10 @@ const useStyles = makeStyles({
   button: {
     color: "white",
     fontSize: "18px"
+  },
+  profilePic: {
+    width: "40px",
+    borderRadius: "50%"
   }
 })
 
@@ -50,7 +54,7 @@ export default function Navbar() {
                 <Link to="/profile" className="link" style={{ color: "inherit" }}>
                   <Button color="inherit">
                     {user.profilePic
-                      ? <img src={`/uploads/${user.profilePic}`} alt="Profile" />
+                      ? <img src={`/uploads/${user.profilePic}`} alt="Profile" className={classes.profilePic} />
                       : <PersonIcon fontSize="large" />}
                   </Button>
                 </Link>

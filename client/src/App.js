@@ -8,6 +8,9 @@ import RegisterPage from './pages/register/RegisterPage'
 import LoginPage from './pages/login/LoginPage'
 import { useSelector } from 'react-redux'
 import CreatePostPage from './pages/create/CreatePostPage'
+import SettingsPage from './pages/settings/SettingsPage'
+import PostPage from './pages/post/PostPage'
+import UserProfilePage from './pages/userprofile/UserProfilePage'
 
 function App() {
   const isAuth = useSelector(state => state.auth.isAuth)
@@ -18,10 +21,11 @@ function App() {
       {isAuth ? (
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route path="/profile" component={ProfilePage} />
+          <Route exact path="/profile" component={ProfilePage} />
+          <Route path="/profile/settings" component={SettingsPage} />
+          <Route path="/users/:username" component={UserProfilePage} />
           <Route path="/create" component={CreatePostPage} />
-          {/* <Route path="/posts/:postId" component={<div>Loading......</div>} />
-          <Route path="/users/:username" component={<div>Loading......</div>} /> */}
+          <Route path="/posts/:postId" component={PostPage} />
           <Redirect to="/login" />
         </Switch>
       ) : (
@@ -29,6 +33,8 @@ function App() {
           <Route path="/register" component={RegisterPage} />
           <Route path="/login" component={LoginPage} />
           <Route exact path="/" component={HomePage} />
+          <Route path="/posts/:postId" component={PostPage} />
+          <Route path="/users/:username" render={UserProfilePage} />
           <Redirect to="/" />
         </Switch>
       )}

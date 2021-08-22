@@ -17,8 +17,9 @@ class UsersController {
     if (req.user && req.user.id === req.body.userId) {
       try {
         const { id } = req.params
+        const profilePic = req.file.originalname
 
-        await User.findByIdAndUpdate(id, {
+        const user = await User.findByIdAndUpdate(id, {
           $set: {
             username: req.body.username,
             firstname: req.body.firstname,
@@ -26,11 +27,11 @@ class UsersController {
             email: req.body.email,
             desc: req.body.desc,
             age: req.body.age,
-            profilePic: req.file.profilePic
+            profilePic
           }
         }, { new: true })
 
-        res.status(200).json({ message: "User has been updated" })
+        res.status(200).json({ message: "User has been updated", user })
       } catch (e) {
         res.status(400).json({ message: e.message })
       }

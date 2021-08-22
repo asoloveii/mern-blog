@@ -6,7 +6,7 @@ import { postsReducer } from "./postsReducer"
 
 const rootReducers = combineReducers({
   auth: authReducer,
-  posts: postsReducer
+  posts: postsReducer,
 })
 
 const store = createStore(rootReducers, composeWithDevTools(applyMiddleware(thunk)))
