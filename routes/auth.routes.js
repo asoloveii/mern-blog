@@ -1,6 +1,7 @@
 const { Router } = require("express")
 const AuthContoller = require("../controllers/authController")
 const uploads = require("../middlewares/fileUpload")
+const verifyToken = require("../middlewares/verifyToken")
 
 const router = Router()
 

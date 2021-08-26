@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 import { Container } from '@material-ui/core'
-import { useDispatch, useSelector } from 'react-redux'
-import Post from '../../components/post/Post'
-import { setPostsThunk } from './../../store/postsReducer'
-import CatNavigation from './../../components/catnavigation/CatNavigation'
-import "./homepage.scss"
+import { useSelector } from 'react-redux'
+import Post from '../components/post/Post'
+import CatNavigation from '../components/catnavigation/CatNavigation'
 import { useLocation } from 'react-router-dom'
 
 const useStyles = makeStyles({
@@ -14,25 +12,22 @@ const useStyles = makeStyles({
   },
   gridContainer: {
     flexGrow: 1
+  },
+  home: {
+    marginBottom: "100px",
   }
 })
 
 export default function HomePage() {
   const classes = useStyles()
-  const dispatch = useDispatch()
   const location = useLocation()
   const category = location.search.split("=")[1]
-
-  useEffect(() => {
-    dispatch(setPostsThunk())
-  }, [dispatch])
-
   const posts = useSelector(state => state.posts.posts)
   const catPosts = posts.filter(p => p.category === category)
   const mainposts = category ? catPosts : posts
 
   return (
-    <div className="home">
+    <div className={classes.home}>
       <Container maxWidth="lg">
         <CatNavigation />
         <Typography variant="h2" align="center" className={classes.heading}>Main Page</Typography>

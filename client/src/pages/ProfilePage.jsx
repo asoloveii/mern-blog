@@ -1,8 +1,9 @@
-import { Container, Grid, makeStyles, Typography } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import { Button, Container, Grid, makeStyles, Typography } from '@material-ui/core'
+import React from 'react'
 import { useSelector } from 'react-redux'
-import Post from '../../components/post/Post'
-import { getUserAPI } from './../../api/api'
+import Post from '../components/post/Post'
+import SettingsIcon from '@material-ui/icons/Settings'
+import { Link } from "react-router-dom"
 
 const useStyles = makeStyles({
   profile: {
@@ -27,39 +28,33 @@ const useStyles = makeStyles({
   }
 })
 
-export default function UserProfilePage({ match }) {
-  const [profile, setProfile] = useState(null)
-
-  useEffect(() => {
-    const fetchProfile = () => {
-      try {
-        let res = getUserAPI(match.params.username)
-        setProfile(res.data)
-      } catch (e) {
-        alert(e.message)
-      }
-    }
-    fetchProfile()
-  }, [match.params.username])
-
+export default function ProfilePage() {
+  const user = useSelector(state => state.auth.user)
   const classes = useStyles()
-  const posts = useSelector(state => state.posts.posts).filter(p => p.author === profile.username)
+  const posts = useSelector(state => state.posts.posts).filter(p => p.author === user.username)
 
   return (
     <div className={classes.profile}>
       <Container maxWidth="md">
         <div className={classes.user}>
-          {profile.profilePic ? (
-            <img src={`/uploads/${profile.profilePic}`} alt="profile" className={classes.profilePic} />
+          {user.profilePic ? (
+            <img src={`/uploads/${user.profilePic}`} alt="profile" className={classes.profilePic} />
           ) : (
             <img src='/images/profileDefault.jpg' alt="profile" className={classes.profilePic} />
           )}
           <div className={classes.info}>
             <div>
-              <Typography variant="h5">{profile.firstname} {profile.secondname}, {profile.age}</Typography>
-              <Typography color="primary" variant="h6" >@{profile.username}</Typography>
-              <Typography variant="body1">{profile.desc}</Typography>
+              <Typography variant="h5">{user.firstname} {user.secondname}, {user.age}</Typography>
+              <Typography color="primary" variant="h6" >@{user.username}</Typography>
+              <Typography variant="body1">{user.desc}</Typography>
             </div>
+
+            <Link to="/profile/settings" style={{ color: "inherit", marginLeft: "350px" }}>
+              <Button style={{ color: "inherit" }}>
+                <SettingsIcon fontSize="large" />
+              </Button>
+            </Link>
+
           </div>
         </div>
         <Grid container spacing={1}>

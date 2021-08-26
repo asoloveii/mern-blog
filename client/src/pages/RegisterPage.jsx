@@ -1,9 +1,8 @@
-import { Button, Container, FormControl, makeStyles, TextField, Typography } from '@material-ui/core'
+import { Button, Container, makeStyles, TextField, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import './register.scss'
-import { Input } from '@material-ui/core';
-import { registerAPI } from '../../api/api';
+import { Input } from '@material-ui/core'
+import { registerAPI } from '../api/api'
 
 const useStyles = makeStyles({
   input: {
@@ -23,6 +22,20 @@ const useStyles = makeStyles({
   profilePic: {
     margin: "auto",
     fontSize: "20px"
+  },
+  register: {
+    margin: "100px 0px"
+  },
+  register__wrapper: {
+    display: "flex"
+  },
+  profilePicDefault: {
+    borderRadius: "50%",
+    objectFit: "cover",
+    width: "100px",
+    height: "100px",
+    cursor: "pointer",
+    marginTop: "40px"
   }
 })
 
@@ -62,15 +75,15 @@ export default function RegisterPage({ history }) {
       setError(e.message)
     }
 
-    history.push("/login")
+    !error && history.push("/login")
   }
 
   return (
-    <div className="register">
+    <div className={classes.register}>
       <Container maxWidth="sm">
-        {error && <Typography>{error}</Typography>}
+        {error && <Typography variant="h6" color="secondary">{error}</Typography>}
         <Typography variant="h4" align="center">Register</Typography>
-        <FormControl fullWidth onSubmit={handleSubmit} encType="multipart/form-data">
+        <form style={{ textAlign: "center" }} fullWidth onSubmit={handleSubmit} encType="multipart/form-data">
           <label htmlFor="profilePic">
             {profilePic ? (
               <img
@@ -79,7 +92,7 @@ export default function RegisterPage({ history }) {
                 alt="profile"
               />
             ) : (
-              <img src="/images/profileDefault.jpg" alt="profile" className="profilePic" />
+              <img src="/images/profileDefault.jpg" alt="profile" className={classes.profilePicDefault} />
             )}
 
           </label>
@@ -103,7 +116,7 @@ export default function RegisterPage({ history }) {
             label="Username"
             className={classes.input}
             fullWidth />
-          <div className="register__wrapper">
+          <div className={classes.register__wrapper}>
             <TextField
               value={firstname}
               onChange={e => setFirstname(e.target.value)}
@@ -128,26 +141,32 @@ export default function RegisterPage({ history }) {
             />
             <TextField
               value={age}
+              type="number"
               onChange={e => setAge(e.target.value)}
               variant="outlined" label="Age"
               className={`${classes.input} ${classes.age}`} />
           </div>
-          <TextField
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            type="password"
-            variant="outlined"
-            label="Password"
-            className={classes.input} />
-          <TextField
-            value={confirmpass}
-            onChange={e => setConfirmpass(e.target.value)}
-            type="password"
-            variant="outlined"
-            label="Confirm assword"
-            className={classes.input} />
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <TextField
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              type="password"
+              variant="outlined"
+              label="Password"
+              style={{ width: "49%" }}
+              className={classes.input} />
+            <TextField
+              value={confirmpass}
+              onChange={e => setConfirmpass(e.target.value)}
+              type="password"
+              variant="outlined"
+              style={{ width: "49%" }}
+              label="Confirm assword"
+              className={classes.input} />
+          </div>
+
           <Button variant="contained" onClick={handleSubmit} size="large" className={classes.button}>Register</Button>
-        </FormControl>
+        </form>
         <Typography align="center" style={{ marginTop: "20px" }}>Already have an account? <Link to="/login" style={{ color: "black" }}>Login</Link></Typography>
       </Container>
     </div>

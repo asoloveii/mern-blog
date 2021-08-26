@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Button, Container, FormControl, makeStyles, TextField } from '@material-ui/core'
+import { Button, Container, FormControl, makeStyles, TextField, Typography } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux';
-import { updateUserThunk } from '../../store/authReducer';
+import { updateUserThunk } from '../store/authReducer';
 
 const useStyles = makeStyles({
   settings: {
@@ -36,6 +36,8 @@ export default function SettingsPage() {
   const user = useSelector(state => state.auth.user)
   const classes = useStyles()
   const dispatch = useDispatch()
+  const [error, setError] = useState("")
+
   const [profilePic, setProfilePic] = useState(user.profilePic)
   const [username, setUsername] = useState(user.username)
   const [firstname, setFirstname] = useState(user.firstname)
@@ -56,13 +58,14 @@ export default function SettingsPage() {
     try {
       dispatch(updateUserThunk(user._id, formData))
     } catch (e) {
-      alert(e.message)
+      setError(e.message)
     }
   }
 
   return (
     <div className={classes.settings}>
       <Container maxWidth="md">
+        {error && <Typography variant="h6" color="secondary">{error}</Typography>}
         <FormControl encType="multipart/form-data">
           <label htmlFor="profilePic">{
             profilePic

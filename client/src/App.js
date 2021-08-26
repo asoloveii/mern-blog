@@ -1,19 +1,25 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, BrowserRouter, Switch, Redirect } from 'react-router-dom'
 import Footer from './components/footer/Footer'
 import Navbar from './components/navbar/Navbar'
-import HomePage from './pages/home/HomePage'
-import ProfilePage from './pages/profile/ProfilePage'
-import RegisterPage from './pages/register/RegisterPage'
-import LoginPage from './pages/login/LoginPage'
-import { useSelector } from 'react-redux'
-import CreatePostPage from './pages/create/CreatePostPage'
-import SettingsPage from './pages/settings/SettingsPage'
-import PostPage from './pages/post/PostPage'
-import UserProfilePage from './pages/userprofile/UserProfilePage'
+import HomePage from './pages/HomePage'
+import ProfilePage from './pages/ProfilePage'
+import RegisterPage from './pages/RegisterPage'
+import LoginPage from './pages/LoginPage'
+import { useDispatch, useSelector } from 'react-redux'
+import CreatePostPage from './pages/CreatePostPage'
+import SettingsPage from './pages/SettingsPage'
+import PostPage from './pages/PostPage'
+import UserProfilePage from './pages/UserProfilePage'
+import { setPostsThunk } from './store/postsReducer';
 
 function App() {
   const isAuth = useSelector(state => state.auth.isAuth)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(setPostsThunk())
+  }, [dispatch])
 
   return (
     <BrowserRouter>

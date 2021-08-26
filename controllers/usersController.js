@@ -18,6 +18,7 @@ class UsersController {
       try {
         const { id } = req.params
         const profilePic = req.file.originalname
+        console.log(req.file)
 
         const user = await User.findByIdAndUpdate(id, {
           $set: {

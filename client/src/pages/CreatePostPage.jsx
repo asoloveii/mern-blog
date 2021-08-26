@@ -1,9 +1,9 @@
-import { Button, Container, FormControl, makeStyles, MenuItem, TextField, Typography } from '@material-ui/core'
+import { Button, Container, makeStyles, MenuItem, TextField, Typography } from '@material-ui/core'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera'
 import { useDispatch, useSelector } from 'react-redux'
-import { createPostThunk } from '../../store/postsReducer'
+import { createPostThunk } from '../store/postsReducer'
 
 const useStyles = makeStyles({
   input: {
@@ -30,20 +30,21 @@ export default function CreatePostPage({ history }) {
   const [category, setCategory] = useState("")
   const [postPhoto, setPostPhoto] = useState("")
 
-  useEffect(() => {
-    const fetchCats = async () => {
-      try {
-        let res = await axios.get("/categories")
-        setCategories(res.data)
-      } catch (e) {
-        setError(e.message)
-      }
+  const fetchCats = async () => {
+    try {
+      let res = await axios.get("/categories")
+      setCategories(res.data)
+    } catch (e) {
+      setError(e.message)
     }
+  }
+
+  useEffect(() => {
     fetchCats()
   }, [])
 
   function handleSubmit(e) {
-    // e.preventDefault()
+    e.preventDefault()
 
     const formData = new FormData()
     formData.append("title", title)
@@ -51,17 +52,21 @@ export default function CreatePostPage({ history }) {
     formData.append("desc", desc)
     formData.append("category", category)
     formData.append("postPhoto", postPhoto)
+    try {
+      dispatch(createPostThunk(formData))
+    } catch (e) {
+      setError(e.message)
+    }
 
-    dispatch(createPostThunk(formData))
-    history.push('/')
+    !error && history.push('/')
   }
 
   return (
     <div>
       <Container maxWidth="sm" className={classes.container}>
         {error && <Typography variant="h5" color="secondary">{error}</Typography>}
-        <FormControl fullWidth onSubmit={handleSubmit}>
-          <label htmlFor="postPhoto" style={{ alignSelf: "center" }}>
+        <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
+          <label htmlFor="postPhoto" >
             <PhotoCameraIcon className={classes.fileIcon} />
           </label>
           <TextField
@@ -89,6 +94,7 @@ export default function CreatePostPage({ history }) {
             onChange={e => setDesc(e.target.value)} />
           <TextField
             select
+            fullWidth
             variant="outlined"
             className={classes.input}
             label="Category"
@@ -99,7 +105,7 @@ export default function CreatePostPage({ history }) {
             ))}
           </TextField>
           <Button type="submit" variant="contained" onClick={handleSubmit}>Post</Button>
-        </FormControl>
+        </form>
       </Container>
     </div>
   )

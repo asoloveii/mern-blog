@@ -2,7 +2,6 @@ import { Container, CssBaseline, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core'
-import "./catnavigation.scss"
 import axios from "axios"
 
 const useStyles = makeStyles({
@@ -13,6 +12,9 @@ const useStyles = makeStyles({
   },
   link: {
     fontSize: "16px"
+  },
+  navLink: {
+    margin: "12px 0"
   }
 })
 
@@ -36,7 +38,7 @@ export default function CatNavigation() {
     <Container maxWidth="lg" className={classes.container}>
       <CssBaseline />
       {categories.map((cat, index) => (
-        <Link key={index} to={`?cat=${cat.name}`} className="link">
+        <Link key={index} to={`?cat=${cat.name}`} className={classes.navLink}>
           <Typography variant="h6" className={classes.link}>{cat.name}</Typography>
         </Link>
       ))}

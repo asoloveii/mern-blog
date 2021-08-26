@@ -1,8 +1,8 @@
-import { Button, Container, FormControl, makeStyles, TextField, Typography } from '@material-ui/core'
+import { Button, Container, makeStyles, TextField, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useDispatch } from "react-redux"
 import { Link } from 'react-router-dom'
-import { loginThunk } from '../../store/authReducer'
+import { loginThunk } from '../store/authReducer'
 
 const useStyles = makeStyles({
   input: {
@@ -11,12 +11,18 @@ const useStyles = makeStyles({
   button: {
     width: "50%",
     margin: "auto",
-    marginTop: "20px"
+    marginTop: "20px",
   },
   loginDesc: {
     maxWidth: "500px",
     margin: "auto",
     color: "gray"
+  },
+  form: {
+    textAlign: "center"
+  },
+  login: {
+    margin: "100px 0px"
   }
 })
 
@@ -25,19 +31,27 @@ export default function LoginPage({ history }) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const dispatch = useDispatch()
+  const [error, setError] = useState("")
 
   async function handleSubmit(e) {
     e.preventDefault()
-    dispatch(loginThunk(email, password))
-    history.push('/')
+
+    try {
+      dispatch(loginThunk(email, password))
+    } catch (e) {
+      setError(e.massage)
+    }
+
+    error === "" && history.push('/')
   }
 
   return (
-    <div className="register">
+    <div className={classes.login}>
       <Container maxWidth="sm">
         <Typography variant="h4" align="center">Login</Typography>
         <Typography variant="h6" align="center" className={classes.loginDesc}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora ratione, fugiat dignissimos aliquam vel aliquid alias earum eum ipsum eos necessitatibus quas possimus expedita. Voluptatem eius nam eveniet id voluptates. </Typography>
-        <FormControl fullWidth onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={classes.form}>
+          {error && <Typography variant="h6" color="secondary">{error}</Typography>}
           <TextField
             value={email}
             onChange={e => setEmail(e.target.value)}
@@ -47,6 +61,7 @@ export default function LoginPage({ history }) {
             className={classes.input}
             fullWidth />
           <TextField
+            fullWidth
             value={password}
             onChange={e => setPassword(e.target.value)}
             type="password"
@@ -55,7 +70,7 @@ export default function LoginPage({ history }) {
             className={classes.input} />
 
           <Button onClick={handleSubmit} variant="contained" type="submit" size="large" className={classes.button}>Login</Button>
-        </FormControl>
+        </form>
         <Typography align="center" style={{ marginTop: "20px" }}>Don't have an account? <Link to="/register" style={{ color: "black" }}>Register</Link></Typography>
       </Container>
     </div>

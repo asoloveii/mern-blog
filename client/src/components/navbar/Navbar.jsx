@@ -2,9 +2,11 @@ import React from 'react'
 import { AppBar, Button, Container, CssBaseline, makeStyles, Toolbar, Typography } from "@material-ui/core"
 import BookmarkIcon from '@material-ui/icons/Bookmark'
 import PersonIcon from "@material-ui/icons/Person"
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useHistory } from 'react-router-dom'
 import CreateIcon from '@material-ui/icons/Create'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import { logoutAC } from '../../store/authReducer'
 
 const useStyles = makeStyles({
   wrapper: {
@@ -24,8 +26,16 @@ const useStyles = makeStyles({
 
 export default function Navbar() {
   const classes = useStyles()
+  const dispatch = useDispatch()
+  const history = useHistory()
   const isAuth = useSelector(state => state.auth.isAuth)
   const user = useSelector(state => state.auth.user)
+
+  const handleLogout = () => {
+    dispatch(logoutAC())
+    localStorage.removeItem("token")
+    history.push("/")
+  }
 
   return (
     <AppBar position="static" style={{ background: "black" }}>
@@ -58,7 +68,9 @@ export default function Navbar() {
                       : <PersonIcon fontSize="large" />}
                   </Button>
                 </Link>
-
+                <Button color="inherit" onClick={handleLogout}>
+                  <ExitToAppIcon fontSize="large" />
+                </Button>
               </>
 
             ) : <Link to="/login" className="link">

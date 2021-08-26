@@ -46,7 +46,7 @@ export const getPostAPI = (postId) => {
 }
 
 export const updatePostAPI = (postId, data, author) => {
-  return instance.put(`/posts/${postId}`, { data })
+  return instance.put(`/posts/${postId}`, data)
 }
 
 export const deletePostAPI = (postId, author) => {
