@@ -15,15 +15,19 @@ app.use("/api/posts", require("./routes/posts.routes.js"))
 app.use("/api/categories", require("./routes/category.routes.js"))
 
 async function start() {
-  await mongoose.connect(process.env.MONGO_URI, {
-    useCreateIndex: true,
-    useFindAndModify: true,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-    .then(() => console.log("DB connected!"))
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useCreateIndex: true,
+      useFindAndModify: true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    })
+      .then(() => console.log("DB connected!"))
 
-  app.listen(PORT, () => console.log('Server started!'))
+    app.listen(PORT, () => console.log('Server started!'))
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 start()
